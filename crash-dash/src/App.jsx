@@ -1,10 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { database } from "./firebaseConfig.js";
+import { ref, set, onValue } from "firebase/database";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const dataRef = ref(database, "/");
+    onValue(
+      dataRef,
+      (snapshot) => {
+        const newData = snapshot.val();
+        if (newData) {
+          setData(newData);
+        } else {
+          console.error("No data available");
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }, []);
+
+  // Function to write data to the database
+  const writeData = () => {
+    set(ref(database, "/"), {
+      example: "This is an example",
+    });
+  };
 
   return (
     <>
@@ -25,11 +53,11 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p className="read-the-docs">Click here</p>
+      <button onClick={writeData}>Write Data</button>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
