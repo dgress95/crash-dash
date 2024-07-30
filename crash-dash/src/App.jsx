@@ -4,6 +4,7 @@ import { database } from "./firebaseConfig.js";
 import { ref, set, onValue } from "firebase/database";
 import LogEvent from "./components/LogEvent/LogEvent.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
+import Header from "./components/Header/Header.jsx";
 
 function App() {
   const [data, setData] = useState(null);
@@ -31,7 +32,7 @@ function App() {
 
   return (
     <>
-      <h2>Crash Dash</h2>
+      <Header />
       <Dashboard />
       <LogEvent developerId={developerId} eventName={"AVD Crash"} />
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
