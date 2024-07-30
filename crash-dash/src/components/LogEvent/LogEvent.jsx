@@ -2,11 +2,11 @@ import React from "react";
 import { logCrash } from "../../firebaseUtils";
 import "./logEvent.css";
 
-const LogEvent = ({ developerId }) => {
+const LogEvent = ({ developerId, eventName }) => {
   const handleClick = () => {
     logCrash(developerId);
   };
-  return <button onClick={handleClick}>Log Crash</button>;
+  return <button onClick={handleClick}>{eventName}</button>;
 };
 
 export default LogEvent;

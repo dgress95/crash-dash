@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { database } from "./firebaseConfig.js";
 import { ref, set, onValue } from "firebase/database";
 import LogEvent from "./components/LogEvent/LogEvent.jsx";
+import Dashboard from "./components/Dashboard/Dashboard.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
   const [data, setData] = useState(null);
   const developerId = "1";
+  // const length = Object.keys(data).length;
 
   useEffect(() => {
     const dataRef = ref(database, "/crashes");
@@ -17,6 +17,7 @@ function App() {
       dataRef,
       (snapshot) => {
         const newData = snapshot.val();
+        console.log(newData);
         if (newData) {
           setData(newData);
         } else {
@@ -31,22 +32,9 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>Crash Dash</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Crash count is {count}
-        </button>
-      </div>
-      {/* <button onClick={writeData}>Log Crash</button> */}
-      <LogEvent developerId={developerId} />
+      <Dashboard />
+      <LogEvent developerId={developerId} eventName={"AVD Crash"} />
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   );
