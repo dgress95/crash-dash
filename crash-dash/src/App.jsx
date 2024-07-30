@@ -6,7 +6,6 @@ import LogEvent from "./components/LogEvent/LogEvent.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [data, setData] = useState(null);
   const developerId = "1";
   // const length = Object.keys(data).length;
@@ -32,10 +31,10 @@ function App() {
 
   return (
     <>
-      <h1>Crash Dash</h1>
+      <h2>Crash Dash</h2>
       <Dashboard />
       <LogEvent developerId={developerId} eventName={"AVD Crash"} />
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </>
   );
 }
