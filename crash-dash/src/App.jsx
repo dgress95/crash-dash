@@ -4,13 +4,15 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { database } from "./firebaseConfig.js";
 import { ref, set, onValue } from "firebase/database";
+import LogEvent from "./components/LogEvent/LogEvent.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
   const [data, setData] = useState(null);
+  const developerId = "1";
 
   useEffect(() => {
-    const dataRef = ref(database, "/");
+    const dataRef = ref(database, "/crashes");
     onValue(
       dataRef,
       (snapshot) => {
@@ -27,13 +29,6 @@ function App() {
     );
   }, []);
 
-  // Function to write data to the database
-  const writeData = () => {
-    set(ref(database, "/"), {
-      example: "This is an example",
-    });
-  };
-
   return (
     <>
       <div>
@@ -44,17 +39,14 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Crash Dash</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          Crash count is {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">Click here</p>
-      <button onClick={writeData}>Write Data</button>
+      {/* <button onClick={writeData}>Log Crash</button> */}
+      <LogEvent developerId={developerId} />
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </>
   );
