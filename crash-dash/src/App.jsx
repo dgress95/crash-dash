@@ -4,11 +4,10 @@ import { database } from "./firebaseConfig.js";
 import { ref, set, onValue } from "firebase/database";
 import LogEvent from "./components/LogEvent/LogEvent.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
-import Header from "./components/Header/Header.jsx";
-import { Auth } from "./components/Auth/Auth.jsx";
-import { SignOut } from "./components/Auth/Auth.jsx";
+import Auth from "./components/Auth/Auth.jsx";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
 
 function App() {
   const [data, setData] = useState(null);
@@ -37,16 +36,15 @@ function App() {
   if (!isAuth) {
     return (
       <div>
-        <Auth />
+        <Auth setIsAuth={setIsAuth} />
       </div>
     );
   }
   return (
     <>
-      <Header />
       <Dashboard />
       <LogEvent developerId={developerId} eventName={"AVD Crash"} />
-      <SignOut />
+      <Sidebar setIsAuth={setIsAuth} />
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </>
   );

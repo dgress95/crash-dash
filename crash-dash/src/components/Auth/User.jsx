@@ -1,23 +1,44 @@
-import { user } from "../../firebaseConfig";
+import React, { useEffect, useState } from "react";
+import { auth } from "../../firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import "./user.css";
 
 const User = () => {
-  const displayName = null;
-  const email = null;
-  const photoURL = null;
-  const emailVerified = null;
-  const uid = null;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
 
   if (user !== null) {
-    // The user object has basic properties such as display name, email, etc.
-    displayName = user.displayName;
-    email = user.email;
-    photoURL = user.photoURL;
-    emailVerified = user.emailVerified;
+    const { displayName, email, photoURL, emailVerified, uid } = user;
 
-    // The user's ID, unique to the Firebase project. Do NOT use
-    // this value to authenticate with your backend server, if
-    // you have one. Use User.getToken() instead.
-    uid = user.uid;
+    return (
+      <div className="user-pill">
+        {photoURL && (
+          <img
+            src={photoURL}
+            alt={`${displayName}'s profile`}
+            className="profile-image"
+          />
+        )}
+        <div className="name-info">
+          <h4>Crash Master</h4>
+          <h3>{displayName}</h3>
+        </div>
+      </div>
+    );
+  } else {
+    return <div>No user is signed in.</div>;
   }
 };
 
